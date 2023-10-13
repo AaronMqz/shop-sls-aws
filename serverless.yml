@@ -1,0 +1,41 @@
+service: shop-service-aws
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+plugins:
+  - serverless-auto-swagger
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: "webpack.config.js" # Name of webpack configuration file
+    includeModules: true # Node modules configuration for packaging
+  autoswagger:
+    title: "Product service API"
+    typefiles: "./src/types/product.ts"
+    basePath: "/dev"
+    apiType: http
+
+package:
+  exclude:
+    - node_modules/**
+
+functions:
+  getProductById:
+    handler: src/handlers/getProductById.getProductById
+    events:
+      - http:
+          path: /products/{productId}
+          method: get
+          cors: true
+  getProductsList:
+    handler: src/handlers/getProductsList.getProductsList
+    events:
+      - http:
+          path: /products
+          method: get
+          cors: true
