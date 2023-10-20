@@ -1,0 +1,68 @@
+service: shop-service-aws
+
+frameworkVersion: "3"
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  #  stage: dev
+  environment:
+    PRODUCTS_TABLE: ${env:PRODUCTS_TABLE}
+    STOCKS_TABLE: ${env:STOCKS_TABLE}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "arn:aws:dynamodb:${aws:region}:*:table/*"
+
+plugins:
+  - serverless-auto-swagger
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: "webpack.config.js" # Name of webpack configuration file
+    includeModules: true # Node modules configuration for packaging
+  autoswagger:
+    title: "Product service API"
+    typefiles: "./src/types/product.ts"
+    basePath: "/dev"
+    apiType: http
+  dotenv:
+    basePath: ./
+
+package:
+  exclude:
+    - node_modules/**
+
+functions:
+  getProductById:
+    handler: src/handlers/getProductById.getProductById
+    events:
+      - http:
+          path: /products/{productId}
+          method: get
+          cors: true
+  getProductsList:
+    handler: src/handlers/getProductsList.getProductsList
+    events:
+      - http:
+          path: /products
+          method: get
+          cors: true
+  createProduct:
+    handler: src/handlers/createProduct.createProduct
+    events:
+      - http:
+          path: /products
+          method: put
+          cors: true
