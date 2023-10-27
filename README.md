@@ -1,37 +1,22 @@
 # shop-sls-aws
 
-## Task 4
+## Task 5
 
 What was done?
 
-- Task 4.1, 4.2 and 4.3 are completed.
-- Frontend is integrated with Product Service.
+- File serverless.yml contains configuration for importProductsFile function
+- The importProductsFile lambda function returns a correct response which can be used to upload a file into the S3 bucket
+- Frontend application is integrated with importProductsFile lambda
+- The importFileParser lambda function is implemented and serverless.yml contains configuration for the lambda
 
-NOTE: "Write a script to fill tables with test examples" you can find it in:
+## Additional tasks:
 
-- ./scripts/fillTables.js
-- command for execution:: npm run fillTables (package.json -> "fillTables": "node ./scripts/fillTables.js")
+- async/await is used in lambda functions.
+- importProductsFile lambda is covered by unit tests.
+- At the end of the stream the lambda function should move the file from the uploaded folder into the parsed folder (move the file means that file should be copied into a new folder in the same bucket called parsed, and then deleted from uploaded folder)
 
-## Additional scope:
-
-- POST /products lambda functions returns error 400 status code if product data is invalid.
-- All lambdas return error 500 status code on any error (DB connection, any unhandled error in code).
-- All lambdas do console.log for each incoming requests and their arguments.
-- Transaction based creation of product.
-
-## Frontend, API/Swagger endpoints:
+## Frontend, API endpoints:
 
 - [FontendURL](https://d31vubhs0l2m6f.cloudfront.net/)
 
-- [Swagger](https://dbhzma9vy5.execute-api.us-east-1.amazonaws.com/dev/swagger): GET - https://dbhzma9vy5.execute-api.us-east-1.amazonaws.com/dev/swagger
-
-- [getProductsList](https://dbhzma9vy5.execute-api.us-east-1.amazonaws.com/dev/products): GET - https://dbhzma9vy5.execute-api.us-east-1.amazonaws.com/dev/products
-- [getProductsById](https://dbhzma9vy5.execute-api.us-east-1.amazonaws.com/dev/products/3567ec4b-b10c-48c5-9345-fc73c48a80aa): GET - https://dbhzma9vy5.execute-api.us-east-1.amazonaws.com/dev/products/3567ec4b-b10c-48c5-9345-fc73c48a80aa
-
-- createProduct: PUT - https://dbhzma9vy5.execute-api.us-east-1.amazonaws.com/dev/products - Use the schema in Postman:
-  {
-  "count":number,
-  "price":number,
-  "description":string,
-  "title":string
-  }
+- [Import Products API](https://y0199mioek.execute-api.us-east-1.amazonaws.com/dev/import): https://y0199mioek.execute-api.us-east-1.amazonaws.com/dev/import
