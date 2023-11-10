@@ -1,22 +1,19 @@
 # shop-sls-aws
 
-## Task 5
+## Task 6
 
 What was done?
 
-- File serverless.yml contains configuration for importProductsFile function
-- The importProductsFile lambda function returns a correct response which can be used to upload a file into the S3 bucket
-- Frontend application is integrated with importProductsFile lambda
-- The importFileParser lambda function is implemented and serverless.yml contains configuration for the lambda
+- File `serverless.yml` contains configuration for `catalogBatchProcess` function
+- File `serverless.yml` contains policies to allow lambda `catalogBatchProcess` function to interact with SNS and SQS
+- File `serverless.yml` contains configuration for SQS `catalogItemsQueue`
+- File `serverless.yml` contains configuration for SNS Topic `createProductTopic` and email subscription
 
 ## Additional tasks:
 
-- async/await is used in lambda functions.
-- importProductsFile lambda is covered by unit tests.
-- At the end of the stream the lambda function should move the file from the uploaded folder into the parsed folder (move the file means that file should be copied into a new folder in the same bucket called parsed, and then deleted from uploaded folder)
+- `catalogBatchProcess` lambda is covered by **unit** tests
+- set a Filter Policy for SNS `createProductTopic` in `serverless.yml` and create an additional email subscription to distribute messages to different emails depending on the filter for any product attribute
 
 ## Frontend, API endpoints:
 
-- [FontendURL](https://d31vubhs0l2m6f.cloudfront.net/)
-
-- [Import Products API](https://y0199mioek.execute-api.us-east-1.amazonaws.com/dev/import): https://y0199mioek.execute-api.us-east-1.amazonaws.com/dev/import
+- [FontendURL](https://d2c9ngqvx2bi1u.cloudfront.net/)
