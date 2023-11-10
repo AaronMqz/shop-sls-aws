@@ -4,7 +4,7 @@ describe("getProductById", () => {
   it("TEST: GET PRODUCT BY ID", async () => {
     const response = await getProductById({
       pathParameters: {
-        productId: "7567ec4b-b10c-48c5-9345-fc73c48a80a1",
+        productId: "3590f3c1-c5df-4b16-89d4-3295a1522b2b",
       },
     });
     const { statusCode } = response;
@@ -19,9 +19,9 @@ describe("getProductById", () => {
           productId: "0",
         },
       });
-      const { body } = response;
-
-      expect(JSON.parse(body).message).toBe("Product not found!");
+      const { statusCode } = response;
+      console.log(response);
+      expect(statusCode).toBe(400);
     });
   });
 });

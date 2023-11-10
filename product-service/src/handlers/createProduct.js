@@ -1,3 +1,4 @@
+require("dotenv").config();
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
@@ -10,7 +11,7 @@ const { PRODUCTS_TABLE, STOCKS_TABLE } = process.env;
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 
-exports.createProduct = async (event) => {
+export const createProduct = async (event) => {
   console.log("*** LAMBDA CREATE PRODUCT START ***");
   try {
     const newProduct = JSON.parse(event.body);

@@ -6,9 +6,23 @@ import {
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 import csv from "csv-parser";
+import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 
 const REGION = "us-east-1";
 const s3Client = new S3Client({ region: REGION });
+const sqs = new SQSClient({ region: REGION });
+
+const sendToSQS = (data) => {
+  sqs.send(
+    new SendMessageCommand(
+      {
+        MessageBody: JSON.stringify(data),
+        QueueUrl: process.env.SQS_URL,
+      },
+      () => console.log("Send Message for:" + data)
+    )
+  );
+};
 
 export const importFileParser = async (event) => {
   const { BUCKET_NAME } = process.env;
@@ -28,7 +42,10 @@ export const importFileParser = async (event) => {
     const { Body: readableStream } = await s3Client.send(command);
 
     await new Promise((resolve, reject) => {
-      const onData = (data) => console.log("Record: ", data);
+      const onData = (data) => {
+        console.log("Record: ", data);
+        sendToSQS(JSON.stringify(data));
+      };
       const onError = (error) => reject(error);
       const onEnd = () => {
         console.log(`Object ${objectKey} was parsed successfully`);

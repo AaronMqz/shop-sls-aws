@@ -1,3 +1,4 @@
+require("dotenv").config();
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import serviceResponse from "../services/response";
